@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imprimaqui Gráfica Rapida</title>
+    <style>
+        :root {
+            --bg: #f7f1f1;
+            --bg-soft: #fff7f7;
+            --surface: rgba(255, 255, 255, 0.86);
+            --surface-strong: rgba(255, 255, 255, 0.96);
+            --text: #211b1c;
+            --muted: #68595c;
+            --line: rgba(119, 20, 28, 0.12);
+            --primary: #c91f2f;
+            --primary-strong: #99111e;
+            --accent: #ffe1e4;
+            --shadow: 0 24px 80px rgba(115, 17, 28, 0.12);
+            --radius-xl: 28px;
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --max-width: 1180px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(201, 31, 47, 0.12), transparent 28%),
+                radial-gradient(circle at 88% 8%, rgba(201, 31, 47, 0.08), transparent 20%),
+                linear-gradient(180deg, #fff9f9 0%, #f7f1f1 100%);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .page-shell {
+            width: min(100% - 32px, var(--max-width));
+            margin: 0 auto;
+        }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(16px);
+            background: rgba(255, 250, 250, 0.82);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .site-header-inner {
+            width: min(100% - 32px, var(--max-width));
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            padding: 18px 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-mark {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+            box-shadow: 0 14px 30px rgba(153, 17, 30, 0.24);
+        }
+
+        .brand-text strong {
+            display: block;
+            font-size: 1.08rem;
+        }
+
+        .brand-text span {
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 22px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 999px;
+            padding: 13px 22px;
+            font-size: 0.96rem;
+            font-weight: 700;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+            box-shadow: 0 14px 30px rgba(153, 17, 30, 0.2);
+        }
+
+        .btn-secondary {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.74);
+            border: 1px solid rgba(153, 17, 30, 0.12);
+        }
+
+        .hero {
+            padding: 64px 0 36px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 28px;
+            align-items: stretch;
+        }
+
+        .hero-copy,
+        .hero-card,
+        .section-card,
+        .service-card,
+        .feature-card,
+        .cta-panel {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow);
+        }
+
+        .hero-copy {
+            border-radius: var(--radius-xl);
+            padding: 44px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-copy::after {
+            content: "";
+            position: absolute;
+            inset: auto -120px -140px auto;
+            width: 260px;
+            height: 260px;
+            background: radial-gradient(circle, rgba(201, 31, 47, 0.18), transparent 65%);
+            pointer-events: none;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(201, 31, 47, 0.1);
+            color: var(--primary-strong);
+            font-size: 0.88rem;
+            margin-bottom: 18px;
+        }
+
+        h1 {
+            font-size: clamp(2.4rem, 5vw, 4.7rem);
+            line-height: 0.98;
+            letter-spacing: -0.05em;
+            max-width: 10ch;
+        }
+
+        .hero-copy p {
+            margin-top: 22px;
+            max-width: 60ch;
+            color: var(--muted);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            margin-top: 30px;
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stats {
+            margin-top: 36px;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .stat {
+            padding: 18px;
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid rgba(153, 17, 30, 0.08);
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 1.45rem;
+            margin-bottom: 6px;
+        }
+
+        .stat span {
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .hero-card {
+            border-radius: var(--radius-xl);
+            padding: 26px;
+            display: grid;
+            gap: 18px;
+        }
+
+        .card-banner {
+            min-height: 220px;
+            border-radius: 22px;
+            padding: 24px;
+            background:
+                linear-gradient(150deg, rgba(201, 31, 47, 0.96), rgba(105, 9, 19, 0.92)),
+                #160102;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: white;
+        }
+
+        .card-banner small {
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            font-size: 0.72rem;
+        }
+
+        .card-banner h2 {
+            font-size: clamp(1.8rem, 3vw, 2.8rem);
+            max-width: 8ch;
+            line-height: 1;
+        }
+
+        .card-banner p {
+            color: rgba(255, 255, 255, 0.88);
+            line-height: 1.6;
+        }
+
+        .card-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .card-list li {
+            list-style: none;
+            padding: 16px 18px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.74);
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            color: var(--muted);
+        }
+
+        .card-list strong {
+            color: var(--text);
+        }
+
+        .section {
+            padding: 36px 0;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .section-heading h2 {
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            letter-spacing: -0.04em;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            max-width: 52ch;
+            line-height: 1.7;
+        }
+
+        .services-grid,
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .service-card,
+        .feature-card {
+            border-radius: var(--radius-lg);
+            padding: 26px;
+        }
+
+        .service-card span,
+        .feature-card span {
+            display: inline-flex;
+            width: 42px;
+            height: 42px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: rgba(201, 31, 47, 0.1);
+            color: var(--primary-strong);
+            margin-bottom: 16px;
+            font-weight: 800;
+        }
+
+        .service-card h3,
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .service-card p,
+        .feature-card p {
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: 0.95fr 1.05fr;
+            gap: 18px;
+        }
+
+        .section-card {
+            border-radius: var(--radius-xl);
+            padding: 30px;
+        }
+
+        .story-panel {
+            min-height: 100%;
+            display: grid;
+            gap: 18px;
+        }
+
+        .story-panel p,
+        .story-panel li {
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        .story-panel ul {
+            padding-left: 18px;
+        }
+
+        .contact-band {
+            padding-bottom: 72px;
+        }
+
+        .cta-panel {
+            border-radius: 30px;
+            padding: 34px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            background:
+                linear-gradient(135deg, rgba(201, 31, 47, 0.08), rgba(255, 255, 255, 0.65));
+        }
+
+        .cta-panel h2 {
+            font-size: clamp(1.7rem, 4vw, 2.8rem);
+            margin-bottom: 10px;
+        }
+
+        .cta-panel p {
+            color: var(--muted);
+            line-height: 1.7;
+            max-width: 54ch;
+        }
+
+        .cta-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .site-footer {
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+        }
+
+        .site-footer-inner {
+            width: min(100% - 32px, var(--max-width));
+            margin: 0 auto;
+            padding: 24px 0 34px;
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 980px) {
+            .site-header-inner,
+            .section-heading,
+            .cta-panel,
+            .site-footer-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links,
+            .header-actions,
+            .cta-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .hero-grid,
+            .story-grid,
+            .services-grid,
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-copy,
+            .hero-card,
+            .section-card,
+            .service-card,
+            .feature-card,
+            .cta-panel {
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 680px) {
+            .hero {
+                padding-top: 34px;
+            }
+
+            .site-header-inner {
+                width: min(100% - 24px, var(--max-width));
+            }
+
+            .page-shell {
+                width: min(100% - 24px, var(--max-width));
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .hero-actions,
+            .header-actions,
+            .cta-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="site-header">
+    <div class="site-header-inner">
+        <a class="brand" href="/home">
+            <div class="brand-mark">IQ</div>
+            <div class="brand-text">
+                <strong>Imprimaqui</strong>
+                <span>Gráfica Rápida</span>
+            </div>
+        </a>
+
+        <nav class="nav-links">
+            <a href="/home#inicio">Inicio</a>
+            <a href="/produtos">Produtos</a>
+            <a href="/home#servicos">Servicos</a>
+            <a href="/home#sobre">Sobre</a>
+            <a href="/home#contato">Contato</a>
+        </nav>
+
+        <div class="header-actions">
+            <a class="btn btn-secondary" href="/login">Login</a>
+            <a class="btn btn-primary" href="/cadastro">Cadastre-se</a>
+        </div>
+    </div>
+</header>
+
+<main class="page-shell">
+    <section class="hero" id="inicio">
+        <div class="hero-grid">
+            <div class="hero-copy">
+                <h1>Seu material pronto com cara de marca forte.</h1>
+                <p>
+                    Imprima suas Apostilas Online sem sair de casa. Você envia os seus arquivos em PDF,
+                    nós imprimimos e despachamos para o seu endereço(entregas disponíveis em todo o território nacional).
+                </p>
+
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="/cadastro">Criar cadastro</a>
+                    <a class="btn btn-secondary" href="/login">Já tenho login</a>
+                    <a class="btn btn-secondary" href="/produtos">Ver produtos</a>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat">
+                        <strong>Envie seus arquivos</strong>
+                        <span>Selecione e envie seus arquivos a serem impressos</span>
+                    </div>
+                    <div class="stat">
+                        <strong>Escolha a forma de impressão</strong>
+                        <span>Especifique o tipo de impressão e tamanho da sua preferência</span>
+                    </div>
+                    <div class="stat">
+                        <strong>Receba em sua casa</strong>
+                        <span>Entregamos sua impressão onde quer que você esteja</span>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="hero-card">
+                <div class="card-banner">
+                    <small>Produção expressa</small>
+                    <h2>Impressões que chamam atenção.</h2>
+                    <p>Do PDF da faculdade ao material da sua empresa.</p>
+                </div>
+
+                <ul class="card-list">
+                    <li>
+                        <strong>Colorido e preto</strong>
+                        <span>Qualidade para estudo, trabalho e divulgacao.</span>
+                    </li>
+                    <li>
+                        <strong>A4 e A3</strong>
+                        <span>Escolha o formato ideal para cada necessidade.</span>
+                    </li>
+                    <li>
+                        <strong>Atendimento direto</strong>
+                        <span>Cadastro simples e acesso rapido pelo sistema.</span>
+                    </li>
+                </ul>
+            </aside>
+        </div>
+    </section>
+
+    <section class="section" id="servicos">
+        <div class="section-heading">
+            <div>
+                <h2>Nossos serviços</h2>
+            </div>
+        </div>
+
+        <div class="services-grid">
+            <article class="service-card">
+                <span>01</span>
+                <h3>Impressão colorida</h3>
+                <p>Materiais com presença visual forte para apresentações, trabalhos universitários e comunicação visual.</p>
+            </article>
+
+            <article class="service-card">
+                <span>02</span>
+                <h3>Preto e branco</h3>
+                <p>Opção econômica para apostilas, documentos, fichas, relatórios e grande volume de páginas.</p>
+            </article>
+
+            <article class="service-card">
+                <span>03</span>
+                <h3>Formatos A4 e A3</h3>
+                <p>Mais flexibilidade para imprimir desde conteúdo acadêmico até peças maiores e mais visíveis.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="section" id="sobre">
+        <div class="story-grid">
+            <article class="section-card story-panel">
+                <div class="section-heading">
+                    <div>
+                        <h2>Quem somos</h2>
+                    </div>
+                </div>
+                <p>
+                    Somos uma gráfica rapida pensada para quem quer praticidade sem abrir mao de uma boa apresentação.
+                    No mercado desde 2015, somos referência em agilidade e qualidade de impressão na região do Curimataú. Nosso foco é oferecer uma experiência online fluida, com um sistema de pedidos simples e atendimento dedicado para garantir que cada cliente receba exatamente o que precisa, quando precisa.
+                </p>
+            </article>
+
+        </div>
+    </section>
+
+    <section class="section contact-band" id="contato">
+        <div class="cta-panel">
+            <div>
+                <h2>Pronto para imprimir com mais praticidade?</h2>
+                <p>
+                    Entre no sistema, faça o seu cadastro e avance para um fluxo mais organizado para pedidos,
+                    atendimento e acompanhamento.
+                </p>
+            </div>
+
+            <div class="cta-actions">
+                <a class="btn btn-secondary" href="/login">Entrar</a>
+                <a class="btn btn-primary" href="/cadastro">Criar conta</a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="site-footer-inner">
+        <span>Imprimaqui Gráfica Rápida</span>
+        <span>As melhores impressões da região são feitas aqui!</span>
+    </div>
+</footer>
+</body>
+</html>

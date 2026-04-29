@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nossos Produtos - Imprimaqui Gráfica Rápida</title>
+    <style>
+        :root {
+        --bg:#f7f1f1;--surface:rgba(255,255,255,.92);--text:#211b1c;--muted:#6e5c5f;
+        --line:rgba(119,20,28,.12);--primary:#c91f2f;--primary-strong:#99111e;
+        --shadow:0 24px 80px rgba(115,17,28,.12);--radius-xl:28px;--max-width:1240px;
+        }
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{
+        font-family:"Segoe UI",Tahoma,Verdana,sans-serif;color:var(--text);
+        background:radial-gradient(circle at top left, rgba(201,31,47,.12), transparent 25%),linear-gradient(180deg,#fff9f9 0%,#f7f1f1 100%);
+        }
+        .page-shell{width:min(100% - 32px,var(--max-width));margin:auto}
+        .site-header{position:sticky;top:0;background:rgba(255,250,250,.84);border-bottom:1px solid var(--line);backdrop-filter:blur(16px)}
+        .site-header-inner{width:min(100% - 32px,var(--max-width));margin:auto;padding:18px 0;display:flex;justify-content:space-between;align-items:center}
+        .brand{display:flex;gap:14px;align-items:center;text-decoration:none;color:inherit}
+        .brand-mark{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--primary-strong));display:grid;place-items:center;color:#fff;font-weight:800}
+        .nav-links{display:flex;gap:22px;color:var(--muted)}
+        .header-actions{display:flex;gap:12px}
+        .btn{border:0;border-radius:999px;padding:13px 22px;font-weight:700;cursor:pointer}
+        .btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-strong));color:#fff}
+        .btn-secondary{background:#fff;border:1px solid rgba(119,20,28,.12)}
+        .product-page{padding:42px 0 72px}
+        .product-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:22px}
+        .gallery,.purchase-panel,.benefits{background:var(--surface);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)}
+        .gallery{padding:28px;display:grid;gap:20px}
+        .main-visual{min-height:430px;border-radius:24px;background:radial-gradient(circle at 20% 20%, rgba(255,255,255,.7), transparent 18%),linear-gradient(140deg,#d22534,#8e1320);display:grid;place-items:center}
+        .paper-stack{width:min(76%,420px);aspect-ratio:4/5.1;background:#fff;border-radius:18px;padding:24px;box-shadow:-16px 18px 0 rgba(255,255,255,.18),-32px 36px 0 rgba(255,255,255,.1),0 26px 50px rgba(0,0,0,.2)}
+        .paper-header{display:flex;justify-content:space-between;margin-bottom:26px}
+        .paper-badge{padding:8px 12px;border-radius:999px;background:rgba(201,31,47,.12);color:var(--primary-strong);font-weight:700}
+        .paper-hero{margin-top:36px;display:grid;gap:10px}
+        .paper-hero strong{font-size:2rem}
+        .paper-hero span{color:#7a5f64;line-height:1.6}
+
+        .thumbs{
+        display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
+        gap:12px;
+        }
+        .thumb{
+        min-height:82px;
+        padding:12px 10px;
+        border-radius:16px;
+        border:1px solid rgba(119,20,28,.10);
+        background:rgba(255,255,255,.90);
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        font-size:.92rem;
+        font-weight:600;
+        cursor:pointer;
+        transition:.28s;
+        box-shadow:0 4px 14px rgba(0,0,0,.03);
+        }
+        .thumb:hover{transform:translateY(-3px);border-color:rgba(201,31,47,.35);box-shadow:0 10px 18px rgba(145,20,28,.08)}
+        .thumb.active{background:linear-gradient(135deg,var(--primary),var(--primary-strong));color:#fff;border-color:transparent}
+
+        .purchase-panel{padding:28px;display:grid;gap:22px}
+        .tag{display:inline-flex;padding:8px 14px;border-radius:999px;background:rgba(201,31,47,.1);color:var(--primary-strong);font-weight:700;width:fit-content}
+        .upload-box,.shipping-panel,.summary{padding:22px;border-radius:20px;background:rgba(255,255,255,.78);border:1px solid rgba(119,20,28,.1)}
+        .upload-header h3{font-size:22px}
+        .upload-header p{font-size:13px;color:var(--muted);margin:8px 0 18px}
+        .drop-area{border:2px dashed var(--primary);border-radius:20px;padding:30px 20px;text-align:center;background:#fff8f8;cursor:pointer}
+        .drop-area button{margin-top:12px;padding:11px 18px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary-strong));color:#fff;font-weight:700}
+        #fileList{list-style:none;margin-top:12px;display:grid;gap:8px}
+        #fileList li{padding:10px 12px;background:#faf4f5;border-radius:10px}
+        .option-group{display:grid;gap:12px}
+        .options{display:flex;gap:10px;flex-wrap:wrap}
+        .option{border:1px solid rgba(119,20,28,.12);background:#fff;border-radius:999px;padding:11px 16px;font-weight:700;cursor:pointer}
+        .option.active{background:linear-gradient(135deg,var(--primary),var(--primary-strong));color:#fff}
+        .summary-line{display:flex;justify-content:space-between;margin-bottom:10px}
+        @media(max-width:1020px){.product-layout,.benefits{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+<header class="site-header"><div class="site-header-inner">
+    <a class="brand" href="/home"><div class="brand-mark">IQ</div><div><strong>Imprimaqui</strong></div></a>
+    <nav class="nav-links"><a>Home</a><a>Produtos</a><a>Login</a><a>Cadastro</a></nav>
+    <div class="header-actions"><button class="btn btn-secondary">Entrar</button><button class="btn btn-primary">Criar conta</button></div>
+</div></header>
+
+<main class="page-shell product-page">
+    <section class="product-layout">
+        <div class="gallery">
+            <div class="main-visual"><div class="paper-stack">
+                <div class="paper-header"><span class="paper-badge" id="preview-type">Colorido</span><span class="paper-badge" id="preview-size">A4</span></div>
+                <div class="paper-hero"><strong id="preview-title">Impressão Colorida A4</strong><span>Ideal para apresentações e documentos.</span></div>
+            </div></div>
+
+            <div class="thumbs">
+                <div class="thumb active" data-type="colorido" data-size="A4">Colorido<br>A4</div>
+                <div class="thumb" data-type="colorido" data-size="A3">Colorido<br>A3</div>
+                <div class="thumb" data-type="pb" data-size="A4">PB<br>A4</div>
+                <div class="thumb" data-type="pb" data-size="A3">PB<br>A3</div>
+            </div>
+        </div>
+
+        <aside class="purchase-panel">
+
+            <div><h2 id="product-name">Impressão Colorida A4</h2><p>Envie seus arquivos e configure a impressão.</p></div>
+
+            <div class="upload-box">
+                <div class="upload-header"><h3>Envie seus arquivos</h3><p>PDF, DOC, DOCX, PNG, JPG, JPEG</p></div>
+                <div class="drop-area" id="dropArea">
+                    <input type="file" id="fileInput" hidden multiple>
+                    <p>Arraste arquivos aqui ou clique para selecionar</p>
+                    <button id="selectBtn">Selecionar arquivo</button>
+                </div>
+                <ul id="fileList"></ul>
+            </div>
+
+            <div class="option-group">
+                <h3>Tipo de impressão</h3>
+                <div class="options" id="type-options">
+                    <button class="option active" data-type="colorido">Colorido</button>
+                    <button class="option" data-type="pb">Preto e branco</button>
+                </div>
+            </div>
+
+            <div class="option-group">
+
+                <h3>Tamanho da folha</h3>
+                <div class="options" id="size-options">
+                    <button class="option active" data-size="A4">A4</button>
+                    <button class="option" data-size="A3">A3</button>
+                </div>
+            </div>
+
+            <div class="shipping-panel">
+                <h3>Calcular frete</h3>
+                <div class="shipping-row"><input type="text" id="cep" placeholder="Digite seu CEP"><button class="btn btn-secondary" id="calc-shipping">Calcular</button></div>
+                <p id="shipping-result">Informe um CEP para estimar retirada local ou envio.</p>
+            </div>
+
+            <div class="summary">
+                <div class="summary-line"><span>Produto</span><strong id="summary-product">Colorido A4</strong></div>
+                <div class="summary-line"><span>Quantidade</span><strong id="summary-qty">1 folha</strong></div>
+                <div class="summary-line"><span>Frete</span><strong id="summary-shipping">A calcular</strong></div>
+                <div class="summary-line"><span>Total</span><strong id="summary-total">R$ 0,00</strong></div>
+            </div>
+        </aside>
+    </section>
+</main>
+
+<script>
+    let selectedType="colorido",selectedSize="A4";
+    function friendlyType(t){return t==="colorido"?"Colorido":"PB";}
+    function syncUI(){
+    document.getElementById("product-name").textContent=`Impressao ${friendlyType(selectedType)} ${selectedSize}`;
+    document.getElementById("preview-type").textContent=friendlyType(selectedType);
+    document.getElementById("preview-size").textContent=selectedSize;
+    document.getElementById("preview-title").textContent=`Impressao ${friendlyType(selectedType)} ${selectedSize}`;
+    document.getElementById("summary-product").textContent=`${friendlyType(selectedType)} ${selectedSize}`;
+    document.querySelectorAll(".thumb").forEach(t=>t.classList.remove("active"));
+    document.querySelector(`.thumb[data-type="${selectedType}"][data-size="${selectedSize}"]`).classList.add("active");
+    document.querySelectorAll("#type-options .option").forEach(b=>{b.classList.toggle("active",b.dataset.type===selectedType)});
+    document.querySelectorAll("#size-options .option").forEach(b=>{b.classList.toggle("active",b.dataset.size===selectedSize)});
+    }
+    document.querySelectorAll(".thumb").forEach(t=>t.onclick=()=>{selectedType=t.dataset.type;selectedSize=t.dataset.size;syncUI();});
+    document.querySelectorAll("#type-options .option").forEach(b=>b.onclick=()=>{selectedType=b.dataset.type;syncUI();});
+    document.querySelectorAll("#size-options .option").forEach(b=>b.onclick=()=>{selectedSize=b.dataset.size;syncUI();});
+
+    const dropArea=document.getElementById("dropArea"),fileInput=document.getElementById("fileInput"),selectBtn=document.getElementById("selectBtn");
+    selectBtn.onclick=()=>fileInput.click();dropArea.onclick=()=>fileInput.click();
+    fileInput.addEventListener("change",()=>{const list=document.getElementById("fileList");list.innerHTML="";[...fileInput.files].forEach(f=>{let li=document.createElement("li");li.textContent="📎 "+f.name;list.appendChild(li);});});
+    syncUI();
+</script>
+</body></html>
