@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Usuario | Imprimaqui</title>
+    <link rel="stylesheet" th:href="@{/css/admin-user-form.css}" href="/css/admin-user-form.css">
+</head>
+<body>
+<main class="page-shell panel">
+    <section class="card">
+        <div class="topbar">
+            <div>
+                <h1>Editar usuario</h1>
+                <p>Atualize nome, idade, email e, se quiser, defina uma nova senha para esse usuario.</p>
+            </div>
+            <a class="btn btn-secondary" href="/admin/users">Voltar ao painel</a>
+        </div>
+
+        <form class="form-grid" method="post" th:action="@{/admin/users/{id}/edit(id=${userId})}" th:object="${userForm}">
+            <div class="form-group">
+                <label for="name">Nome</label>
+                <input type="text" id="name" th:field="*{name}" required>
+                <div class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Idade</label>
+                <input type="number" id="age" th:field="*{age}" min="0" required>
+                <div class="field-error" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></div>
+            </div>
+
+            <div class="form-group full">
+                <label for="email">Email</label>
+                <input type="email" id="email" th:field="*{email}" required>
+                <div class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+            </div>
+
+            <div class="form-group full">
+                <label for="password">Nova senha</label>
+                <input type="password" id="password" th:field="*{password}" placeholder="Deixe em branco para manter a atual">
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary" type="submit">Salvar alteracoes</button>
+                <a class="btn btn-secondary" href="/admin/users">Cancelar</a>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>

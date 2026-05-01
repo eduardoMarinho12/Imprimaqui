@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho | Imprimaqui</title>
+    <link rel="stylesheet" th:href="@{/css/commerce.css}" href="/css/commerce.css">
+</head>
+<body>
+<header class="site-header">
+    <div class="site-header-inner">
+        <a class="brand" href="/home">
+            <div class="brand-mark">IQ</div>
+            <div>
+                <strong>Imprimaqui</strong>
+                <div class="brand-meta">Carrinho e fechamento do pedido</div>
+            </div>
+        </a>
+        <nav class="nav-links">
+            <a href="/produtos">Produtos</a>
+            <a href="/carrinho">Carrinho <span class="nav-badge" th:text="${cartItemCount}">0</span></a>
+            <a href="/meus-pedidos">Meus pedidos</a>
+            <a href="/admin/orders">Pedidos</a>
+        </nav>
+    </div>
+</header>
+
+<main class="page-shell page">
+    <section class="page-head">
+        <h1>Seu carrinho</h1>
+        <p>Revise os itens antes de calcular o frete e fechar o pedido.</p>
+    </section>
+
+    <div class="feedback success" th:if="${successMessage}" th:text="${successMessage}"></div>
+    <div class="feedback error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+    <section class="empty-card" th:if="${#lists.isEmpty(cart.items)}">
+        <h2>Seu carrinho está vazio</h2>
+        <p>Adicione pelo menos um produto para avançar no fluxo comercial.</p>
+        <a class="btn btn-primary" href="/produtos">Ir para produtos</a>
+    </section>
+
+    <section class="commerce-layout" th:if="${!#lists.isEmpty(cart.items)}">
+        <div class="commerce-list">
+            <article class="line-card" th:each="item : ${cart.items}">
+                <div class="line-main">
+                    <div>
+                        <h2 th:text="${item.productName}"></h2>
+                        <p th:text="${item.description}"></p>
+                        <div class="chips">
+                            <span class="chip" th:text="${item.printType}"></span>
+                            <span class="chip" th:text="${item.paperSize}"></span>
+                        </div>
+                    </div>
+                    <div class="line-price" th:text="${#numbers.formatCurrency(item.subtotal)}"></div>
+                </div>
+
+                <div class="line-actions">
+                    <form class="qty-form" method="post" th:action="@{/carrinho/{productId}/atualizar(productId=${item.productId})}">
+                        <label th:for="'qty-' + ${item.productId}">Quantidade</label>
+                        <input th:id="'qty-' + ${item.productId}" type="number" name="quantity" min="1" th:value="${item.quantity}" required>
+                        <button class="btn btn-secondary" type="submit">Atualizar</button>
+                    </form>
+
+                    <form method="post" th:action="@{/carrinho/{productId}/remover(productId=${item.productId})}">
+                        <button class="btn btn-danger" type="submit">Remover</button>
+                    </form>
+                </div>
+            </article>
+        </div>
+
+        <aside class="summary-card">
+            <h2>Resumo</h2>
+            <div class="summary-row">
+                <span>Itens</span>
+                <strong th:text="${cart.itemCount}"></strong>
+            </div>
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <strong th:text="${#numbers.formatCurrency(cart.subtotal)}"></strong>
+            </div>
+            <p>O frete é calculado no checkout com base no CEP informado.</p>
+            <div class="summary-actions">
+                <a class="btn btn-secondary" href="/produtos">Continuar comprando</a>
+                <a class="btn btn-primary" href="/checkout">Ir para checkout</a>
+            </div>
+        </aside>
+    </section>
+</main>
+</body>
+</html>

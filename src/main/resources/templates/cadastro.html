@@ -4,258 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro | Imprimaqui</title>
-    <style>
-        :root {
-            --bg: #f7f1f1;
-            --surface: rgba(255, 255, 255, 0.92);
-            --surface-soft: rgba(255, 255, 255, 0.74);
-            --text: #211b1c;
-            --muted: #6e5c5f;
-            --line: rgba(119, 20, 28, 0.12);
-            --primary: #c91f2f;
-            --primary-strong: #99111e;
-            --success-bg: #e9f8ef;
-            --success-text: #1d6b39;
-            --error-bg: #fdebec;
-            --error-text: #a11b2b;
-            --shadow: 0 28px 80px rgba(115, 17, 28, 0.14);
-            --radius-xl: 30px;
-            --radius-lg: 20px;
-            --radius-md: 14px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            min-height: 100vh;
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            color: var(--text);
-            background:
-                radial-gradient(circle at top left, rgba(201, 31, 47, 0.12), transparent 25%),
-                linear-gradient(180deg, #fff9f9 0%, #f7f1f1 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-        }
-
-        .auth-shell {
-            width: min(1140px, 100%);
-            display: grid;
-            grid-template-columns: 0.88fr 1.12fr;
-            background: var(--surface);
-            border: 1px solid var(--line);
-            border-radius: var(--radius-xl);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-        }
-
-        .auth-aside {
-            background: linear-gradient(160deg, #f8d5d9, #f2bfc5);
-            color: var(--text);
-            padding: 44px;
-            display: grid;
-            align-content: space-between;
-            gap: 28px;
-            border-right: 1px solid var(--line);
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            font-weight: 700;
-        }
-
-        .brand-mark {
-            width: 46px;
-            height: 46px;
-            border-radius: 14px;
-            display: grid;
-            place-items: center;
-            background: linear-gradient(135deg, var(--primary), var(--primary-strong));
-            color: white;
-        }
-
-        .auth-aside h1 {
-            font-size: clamp(2rem, 5vw, 3.1rem);
-            line-height: 1;
-            margin-bottom: 16px;
-        }
-
-        .auth-aside p,
-        .auth-aside li {
-            color: #53383d;
-            line-height: 1.75;
-        }
-
-        .auth-aside ul {
-            padding-left: 18px;
-            display: grid;
-            gap: 8px;
-        }
-
-        .auth-main {
-            padding: 44px;
-            display: grid;
-            gap: 26px;
-            align-content: center;
-        }
-
-        .top-links {
-            display: flex;
-            justify-content: space-between;
-            gap: 14px;
-            flex-wrap: wrap;
-            color: var(--muted);
-            font-size: 0.95rem;
-        }
-
-        .top-links a {
-            color: var(--primary);
-            font-weight: 700;
-            text-decoration: none;
-        }
-
-        .title-block h2 {
-            font-size: clamp(1.9rem, 4vw, 2.8rem);
-            margin-bottom: 10px;
-        }
-
-        .title-block p {
-            color: var(--muted);
-            line-height: 1.7;
-        }
-
-        .feedback {
-            padding: 14px 16px;
-            border-radius: 16px;
-            font-size: 0.96rem;
-            line-height: 1.6;
-        }
-
-        .feedback.success {
-            background: var(--success-bg);
-            color: var(--success-text);
-            border: 1px solid rgba(29, 107, 57, 0.12);
-        }
-
-        .feedback.error {
-            background: var(--error-bg);
-            color: var(--error-text);
-            border: 1px solid rgba(161, 27, 43, 0.12);
-        }
-
-        .form-card {
-            background: var(--surface-soft);
-            border: 1px solid var(--line);
-            border-radius: var(--radius-lg);
-            padding: 28px;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-        }
-
-        .form-group.full {
-            grid-column: 1 / -1;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 700;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 14px 16px;
-            border-radius: var(--radius-md);
-            border: 1px solid rgba(119, 20, 28, 0.14);
-            background: white;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .form-group input:focus {
-            border-color: rgba(201, 31, 47, 0.5);
-            box-shadow: 0 0 0 4px rgba(201, 31, 47, 0.12);
-        }
-
-        .field-error {
-            margin-top: 6px;
-            color: var(--error-text);
-            font-size: 0.88rem;
-        }
-
-        .actions {
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-            margin-top: 8px;
-            grid-column: 1 / -1;
-        }
-
-        .btn {
-            border: 0;
-            border-radius: 999px;
-            padding: 14px 22px;
-            font-size: 0.98rem;
-            font-weight: 700;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            color: white;
-            background: linear-gradient(135deg, var(--primary), var(--primary-strong));
-        }
-
-        .btn-secondary {
-            color: var(--text);
-            background: white;
-            border: 1px solid rgba(119, 20, 28, 0.12);
-        }
-
-        .note {
-            color: var(--muted);
-            line-height: 1.7;
-            font-size: 0.94rem;
-        }
-
-        @media (max-width: 960px) {
-            .auth-shell {
-                grid-template-columns: 1fr;
-            }
-
-            .auth-aside,
-            .auth-main {
-                padding: 28px;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .actions {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-                text-align: center;
-            }
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/cadastro.css}" href="/css/cadastro.css">
 </head>
 <body>
 <div class="auth-shell">
@@ -267,27 +16,18 @@
 
         <div>
             <h1>Crie sua conta e comece seu pedido.</h1>
-            <p>
-                O cadastro agora segue a mesma linha visual da home e da tela de login, com mais clareza e feedback real na propria tela.
-            </p>
         </div>
-
-        <ul>
-            <li>Cadastro mais completo e consistente.</li>
-            <li>Campo de idade incluido para bater com a entidade do sistema.</li>
-            <li>Mensagens de erro sem perder os dados digitados.</li>
-        </ul>
     </aside>
 
     <main class="auth-main">
         <div class="top-links">
             <span><a href="/home">Voltar para a home</a></span>
-            <span>Ja tem conta? <a href="/login">Fazer login</a></span>
+            <span>Já tem conta? <a href="/login">Fazer login</a></span>
         </div>
 
         <div class="title-block">
             <h2>Cadastro</h2>
-            <p>Preencha seus dados para entrar no sistema e continuar seu fluxo de impressao.</p>
+            <p>Preencha seus dados para entrar no sistema e continuar seu fluxo de impressão.</p>
         </div>
 
         <div class="feedback error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
@@ -318,15 +58,21 @@
                     <div class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
                 </div>
 
+                <div class="form-group full">
+                    <label for="password">Digite novamente a senha</label>
+                    <input type="password" id="password" th:field="*{password}" placeholder="Digite novamente a senha" required>
+                    <div class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                </div>
+
                 <div class="actions">
                     <button class="btn btn-primary" type="submit">Cadastrar</button>
-                    <a class="btn btn-secondary" href="/login">Ja tenho login</a>
+                    <a class="btn btn-secondary" href="/login">Já tenho login</a>
                 </div>
             </form>
         </div>
 
         <p class="note">
-            Agora, se o email ja existir ou algum campo vier invalido, a tela mostra o motivo sem limpar o formulario.
+           Espaço destinado a termos e condições.
         </p>
     </main>
 </div>

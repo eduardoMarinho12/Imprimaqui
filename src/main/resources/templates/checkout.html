@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Imprimaqui</title>
+    <link rel="stylesheet" th:href="@{/css/commerce.css}" href="/css/commerce.css">
+</head>
+<body>
+<header class="site-header">
+    <div class="site-header-inner">
+        <a class="brand" href="/home">
+            <div class="brand-mark">IQ</div>
+            <div>
+                <strong>Imprimaqui</strong>
+                <div class="brand-meta">Checkout e confirmação</div>
+            </div>
+        </a>
+        <nav class="nav-links">
+            <a href="/produtos">Produtos</a>
+            <a href="/carrinho">Carrinho <span class="nav-badge" th:text="${cartItemCount}">0</span></a>
+            <a href="/meus-pedidos">Meus pedidos</a>
+        </nav>
+    </div>
+</header>
+
+<main class="page-shell page">
+    <section class="page-head">
+        <h1>Checkout</h1>
+        <p>Confirme os itens, informe o CEP e transforme o carrinho em pedido real.</p>
+    </section>
+
+    <div class="feedback error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+    <section class="commerce-layout">
+        <div class="commerce-list">
+            <article class="line-card" th:each="item : ${cart.items}">
+                <div class="line-main">
+                    <div>
+                        <h2 th:text="${item.productName}"></h2>
+                        <p th:text="${item.quantity + ' unidade(s)'}"></p>
+                    </div>
+                    <div class="line-price" th:text="${#numbers.formatCurrency(item.subtotal)}"></div>
+                </div>
+            </article>
+        </div>
+
+        <aside class="summary-card">
+            <h2>Entrega e total</h2>
+            <form class="checkout-form" method="get" action="/checkout">
+                <label for="shippingZipCode">CEP para frete</label>
+                <input id="shippingZipCode" type="text" name="zipCode" th:value="${checkoutForm.shippingZipCode}" placeholder="00000-000" required>
+                <button class="btn btn-secondary" type="submit">Calcular frete</button>
+            </form>
+
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <strong th:text="${#numbers.formatCurrency(cart.subtotal)}"></strong>
+            </div>
+            <div class="summary-row" th:if="${shippingEstimate != null}">
+                <span>Frete</span>
+                <strong th:text="${#numbers.formatCurrency(shippingEstimate)}"></strong>
+            </div>
+            <div class="summary-row total" th:if="${grandTotal != null}">
+                <span>Total</span>
+                <strong th:text="${#numbers.formatCurrency(grandTotal)}"></strong>
+            </div>
+
+            <form class="checkout-form" method="post" action="/checkout" th:object="${checkoutForm}">
+                <label for="shippingZipCodeFinal">CEP de entrega</label>
+                <input id="shippingZipCodeFinal" type="text" th:field="*{shippingZipCode}" placeholder="00000-000" required>
+                <button class="btn btn-primary" type="submit">Finalizar pedido</button>
+            </form>
+        </aside>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erro | Imprimaqui</title>
+    <link rel="stylesheet" th:href="@{/css/error.css}" href="/css/error.css">
+</head>
+<body>
+<main class="error-shell">
+    <span class="badge" th:text="${statusCode != null ? 'Erro ' + statusCode : 'Erro'}">Erro</span>
+    <h1>Algo nao saiu como esperado.</h1>
+    <p th:text="${errorMessage ?: 'Ocorreu um problema ao processar sua solicitacao. Tente novamente em instantes.'}">
+        Ocorreu um problema ao processar sua solicitacao. Tente novamente em instantes.
+    </p>
+    <div class="actions">
+        <a class="btn btn-primary" href="/home">Voltar para a home</a>
+        <a class="btn btn-secondary" href="/produtos">Ir para produtos</a>
+    </div>
+</main>
+</body>
+</html>

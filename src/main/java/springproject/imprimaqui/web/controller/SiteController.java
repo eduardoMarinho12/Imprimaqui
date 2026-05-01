@@ -9,26 +9,40 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
-import springproject.imprimaqui.dto.auth.LoginFormDTO;
-import springproject.imprimaqui.dto.auth.RegisterDTO;
+import springproject.imprimaqui.dto.product.ProductResponseDTO;
+import springproject.imprimaqui.service.OrderService;
+import springproject.imprimaqui.service.ProductService;
 import springproject.imprimaqui.service.UserService;
+import springproject.imprimaqui.web.dto.LoginFormDTO;
+import springproject.imprimaqui.web.dto.RegisterFormDTO;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @Controller
 public class SiteController {
 
     private final UserService userService;
+    private final ProductService productService;
+    private final OrderService orderService;
 
-    public SiteController(UserService userService) {
+    public SiteController(UserService userService,
+                          ProductService productService,
+                          OrderService orderService) {
         this.userService = userService;
+        this.productService = productService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/home")
-    public String home() {
+    public String home(Model model) {
+        model.addAttribute("featuredProducts", listarProdutosDestaque());
         return "home";
     }
 
     @GetMapping("/")
-    public String bair() {
+    public String bair(Model model) {
+        model.addAttribute("featuredProducts", listarProdutosDestaque());
         return "home";
     }
 
@@ -57,19 +71,53 @@ public class SiteController {
     @GetMapping("/cadastro")
     public String cadastrar(Model model) {
         if (!model.containsAttribute("registerForm")) {
-            model.addAttribute("registerForm", new RegisterDTO());
+            model.addAttribute("registerForm", new RegisterFormDTO());
         }
 
         return "cadastro";
     }
 
     @GetMapping("/produtos")
-    public String produtos() {
+    public String produtos(@RequestParam(required = false) Long productId,
+                           @RequestParam(required = false) String zipCode,
+                           @RequestParam(required = false, defaultValue = "1") Integer quantity,
+                           Model model) {
+        List<ProductResponseDTO> products = productService.listarProdutosAtivos();
+        ProductResponseDTO selectedProduct = products.isEmpty() ? null : products.get(0);
+
+        if (productId != null) {
+            selectedProduct = products.stream()
+                    .filter(product -> product.getId().equals(productId))
+                    .findFirst()
+                    .orElse(selectedProduct);
+        }
+
+        model.addAttribute("products", products);
+        model.addAttribute("selectedProduct", selectedProduct);
+        model.addAttribute("selectedQuantity", Math.max(quantity, 1));
+
+        if (selectedProduct != null) {
+            BigDecimal subtotal = selectedProduct.getUnitPrice().multiply(BigDecimal.valueOf(Math.max(quantity, 1)));
+            model.addAttribute("subtotalEstimate", subtotal);
+
+            if (zipCode != null && !zipCode.isBlank()) {
+                try {
+                    BigDecimal shippingEstimate = orderService.calcularFreteEstimado(zipCode);
+                    model.addAttribute("zipCode", zipCode);
+                    model.addAttribute("shippingEstimate", shippingEstimate);
+                    model.addAttribute("totalEstimate", subtotal.add(shippingEstimate));
+                } catch (ResponseStatusException ex) {
+                    model.addAttribute("zipCode", zipCode);
+                    model.addAttribute("errorMessage", ex.getReason());
+                }
+            }
+        }
+
         return "produtos";
     }
 
     @PostMapping("/cadastro")
-    public String cadastroUsuario(@Valid @ModelAttribute("registerForm") RegisterDTO user,
+    public String cadastroUsuario(@Valid @ModelAttribute("registerForm") RegisterFormDTO user,
                                   BindingResult result,
                                   Model model) {
         if (result.hasErrors()) {
@@ -99,5 +147,12 @@ public class SiteController {
     @GetMapping("/contact")
     public String contacts() {
         return "contact";
+    }
+
+    private List<ProductResponseDTO> listarProdutosDestaque() {
+        return productService.listarProdutosAtivos()
+                .stream()
+                .limit(4)
+                .toList();
     }
 }

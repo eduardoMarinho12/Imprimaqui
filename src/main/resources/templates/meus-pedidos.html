@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Pedidos | Imprimaqui</title>
+    <link rel="stylesheet" th:href="@{/css/commerce.css}" href="/css/commerce.css">
+</head>
+<body>
+<header class="site-header">
+    <div class="site-header-inner">
+        <a class="brand" href="/home">
+            <div class="brand-mark">IQ</div>
+            <div>
+                <strong>Imprimaqui</strong>
+                <div class="brand-meta">Acompanhamento do pedido</div>
+            </div>
+        </a>
+        <nav class="nav-links">
+            <a href="/produtos">Produtos</a>
+            <a href="/carrinho">Carrinho <span class="nav-badge" th:text="${cartItemCount}">0</span></a>
+            <a href="/meus-pedidos">Meus pedidos</a>
+        </nav>
+    </div>
+</header>
+
+<main class="page-shell page">
+    <section class="page-head">
+        <h1>Meus pedidos</h1>
+        <p>Acompanhe o status comercial de cada pedido criado no sistema.</p>
+    </section>
+
+    <div class="feedback success" th:if="${successMessage}" th:text="${successMessage}"></div>
+
+    <section class="empty-card" th:if="${#lists.isEmpty(orders)}">
+        <h2>Você ainda não tem pedidos</h2>
+        <p>Assim que finalizar um checkout, seu pedido aparecerá aqui com status e itens.</p>
+        <a class="btn btn-primary" href="/produtos">Começar compra</a>
+    </section>
+
+    <section class="orders-grid" th:if="${!#lists.isEmpty(orders)}">
+        <article class="order-card" th:each="order : ${orders}">
+            <div class="order-head">
+                <div>
+                    <h2 th:text="'Pedido #' + ${order.id}"></h2>
+                    <p th:text="${#temporals.format(order.createdAt, 'dd/MM/yyyy HH:mm')}"></p>
+                </div>
+                <span class="status-badge" th:text="${order.status}"></span>
+            </div>
+
+            <div class="summary-row">
+                <span>CEP</span>
+                <strong th:text="${order.shippingZipCode}"></strong>
+            </div>
+            <div class="summary-row">
+                <span>Frete</span>
+                <strong th:text="${#numbers.formatCurrency(order.shippingCost)}"></strong>
+            </div>
+            <div class="summary-row total">
+                <span>Total</span>
+                <strong th:text="${#numbers.formatCurrency(order.totalAmount)}"></strong>
+            </div>
+
+            <div class="order-items">
+                <div class="order-item" th:each="item : ${order.items}">
+                    <span th:text="${item.productName + ' x' + item.quantity}"></span>
+                    <strong th:text="${#numbers.formatCurrency(item.subtotal)}"></strong>
+                </div>
+            </div>
+        </article>
+    </section>
+</main>
+</body>
+</html>

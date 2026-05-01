@@ -1,4 +1,4 @@
-package springproject.imprimaqui.dto.auth;
+package springproject.imprimaqui.web.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

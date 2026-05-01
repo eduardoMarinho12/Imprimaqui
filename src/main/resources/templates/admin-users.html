@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Usuarios | Imprimaqui</title>
+    <link rel="stylesheet" th:href="@{/css/admin-users.css}" href="/css/admin-users.css">
+</head>
+<body>
+<header class="site-header">
+    <div class="site-header-inner">
+        <a class="brand" href="/home">
+            <div class="brand-mark">IQ</div>
+            <div>
+                <strong>Imprimaqui</strong>
+                <div class="brand-meta">Painel administrativo de usuarios</div>
+            </div>
+        </a>
+        <div class="header-actions">
+            <a class="btn btn-secondary" href="/produtos">Produtos</a>
+            <a class="btn btn-secondary" href="/admin/orders">Pedidos</a>
+            <a class="btn btn-secondary" href="/home">Home</a>
+            <a class="btn btn-primary" href="/cadastro">Novo usuario</a>
+        </div>
+    </div>
+</header>
+
+<main class="page-shell panel">
+    <section class="hero">
+        <div>
+            <h1>Gestao de usuarios</h1>
+            <p>Area administrativa para listar, editar e remover usuarios cadastrados. A tela usa o PostgreSQL real via JPA e reflete o estado atual do banco.</p>
+        </div>
+    </section>
+
+    <div class="feedback" th:if="${successMessage}" th:text="${successMessage}"></div>
+
+    <section class="table-card" th:if="${!#lists.isEmpty(users)}">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Idade</th>
+                <th>Email</th>
+                <th>Acoes</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td data-label="ID" th:text="${user.id}"></td>
+                <td data-label="Nome" th:text="${user.name}"></td>
+                <td data-label="Idade" th:text="${user.age}"></td>
+                <td data-label="Email" th:text="${user.email}"></td>
+                <td class="actions" data-label="Acoes">
+                    <div class="actions-wrap">
+                        <a class="btn btn-secondary" th:href="@{/admin/users/{id}/edit(id=${user.id})}">Editar</a>
+                        <form class="inline" th:action="@{/admin/users/{id}/delete(id=${user.id})}" method="post">
+                            <button class="btn btn-danger" type="submit">Excluir</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="table-card" th:if="${#lists.isEmpty(users)}">
+        <div class="empty-state">
+            Nenhum usuario encontrado no banco no momento.
+        </div>
+    </section>
+</main>
+</body>
+</html>
