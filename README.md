@@ -1,6 +1,6 @@
 # Imprimaqui
 
-Aplicacao Spring Boot para uma grafica rapida com autenticacao, catalogo de produtos, carrinho, checkout, pedidos e area administrativa, usando PostgreSQL, Thymeleaf e API REST.
+Aplicação Spring Boot para uma gráfica rápida com autenticação, catálogo de produtos, carrinho, checkout, pedidos e área administrativa, usando PostgreSQL, Thymeleaf e API REST.
 
 ## Stack
 
@@ -39,43 +39,43 @@ src/main/java/springproject/imprimaqui
 ## Responsabilidades por Camada
 
 - `api.controller`
-  Endpoints REST para autenticacao, usuarios, produtos e pedidos.
+  Endpoints REST para autenticação, usuários, produtos e pedidos.
 
 - `web.controller`
-  Controllers das paginas HTML, navegacao, carrinho, checkout, meus pedidos e paineis administrativos.
+  Controllers das páginas HTML, navegação, carrinho, checkout, meus pedidos e painéis administrativos.
 
 - `config.security`
-  Configuracao do Spring Security, login form, logout, rotas publicas e redirecionamento apos autenticacao.
+  Configuração do Spring Security, login form, logout, rotas públicas e redirecionamento após autenticação.
 
 - `config.exception`
-  Tratamento global de erros para API e para paginas web.
+  Tratamento global de erros para API e para páginas web.
 
 - `domain.user`
-  Entidade `User` e repositorio de usuarios.
+  Entidade `User` e repositório de usuários.
 
 - `domain.product`
   Entidade `Product`, enums de tipo de impressao e tamanho de folha, e repositorio de produtos.
 
 - `domain.order`
-  Entidades `CustomerOrder` e `OrderItem`, enum `OrderStatus` e repositorio de pedidos.
+  Entidades `CustomerOrder` e `OrderItem`, enum `OrderStatus` e repositório de pedidos.
 
 - `dto.auth`
-  DTOs da API de autenticacao.
+  DTOs da API de autenticação.
 
 - `dto.product`
   DTOs REST de produtos.
 
 - `dto.order`
-  DTOs REST de criacao e resposta de pedidos.
+  DTOs REST de criação e resposta de pedidos.
 
 - `dto.user`
-  DTOs REST de resposta e atualizacao de usuarios.
+  DTOs REST de resposta e atualização de usuários.
 
 - `web.dto`
-  DTOs especificos das telas web, como login, cadastro, carrinho e checkout.
+  DTOs específicos das telas web, como login, cadastro, carrinho e checkout.
 
 - `service`
-  Regras de negocio de usuarios, produtos, pedidos e carrinho.
+  Regras de negócio de usuários, produtos, pedidos e carrinho.
 
 ## Funcionalidades Atuais
 
@@ -130,9 +130,9 @@ src/main/java/springproject/imprimaqui
 1. Usuario acessa `/login`
 2. Formulario envia `POST /login`
 3. Spring Security usa `UserService#loadUserByUsername`
-4. A autenticacao ocorre com email e senha do PostgreSQL
+4. A autenticação ocorre com email e senha do PostgreSQL
 5. Se o login vier de uma rota protegida, o usuario retorna para essa rota
-6. Caso contrario, o destino padrao e `/home`
+6. Caso contrário, o destino padrao é `/home`
 
 ### Fluxo comercial do cliente
 
@@ -142,21 +142,19 @@ src/main/java/springproject/imprimaqui
 4. Revisa os itens em `/carrinho`
 5. Calcula frete e fecha em `/checkout`
 6. O sistema cria um pedido real no banco
-7. O pedido fica visivel em `/meus-pedidos`
+7. O pedido fica visível em `/meus-pedidos`
 
 ### Fluxo operacional do pedido
 
 1. Um pedido e criado com status `CRIADO`
 2. O usuario acompanha o pedido em `/meus-pedidos`
-3. A area administrativa lista pedidos em `/admin/orders`
+3. A área administrativa lista pedidos em `/admin/orders`
 4. O status pode evoluir para:
    - `CRIADO`
    - `EM_PROCESSAMENTO`
    - `PRONTO`
    - `ENTREGUE`
    - `CANCELADO`
-
-## Endpoints REST
 
 ### Autenticacao
 
@@ -202,7 +200,7 @@ src/main/java/springproject/imprimaqui
 
 ## Banco de Dados
 
-Configuracao atual em `src/main/resources/application.properties`:
+Configuração atual em `src/main/resources/application.properties`:
 
 - Banco: PostgreSQL
 - URL: `jdbc:postgresql://localhost:5883/imprimaqui`
@@ -235,4 +233,3 @@ Rodar:
 ```bash
 mvn test
 ```
-
